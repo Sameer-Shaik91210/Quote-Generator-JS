@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quote Generator</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="quote-box">
+      <img onclick="toggleTheme()" id="lightIcon" src="moon.png" />
+      <h2>Quote of the Day</h2>
+      <blockquote id="quote"></blockquote>
+      <span id="author"></span>
+      <div>
+        <button onClick="api()">New Quote</button>
+        <button onclick="tweet()"><img src="Xicon.png" alt="" />Tweet</button>
+      </div>
+    </div>
+    <script>
+      let quoteEle = document.getElementById("quote");
+      let authorEle = document.getElementById("author");
+      let themeButton = document.getElementById("lightIcon");
+
+      const api = async () => {
+        const response = await fetch("https://api.quotable.io/random");
+        const data = await response.json();
+        console.log(data);
+        quoteEle.innerHTML = data.content;
+        authorEle.innerHTML = data.author;
+      };
+      api();
+      let twitter =
+        "https://twitter.com/intent/tweet?text=" + quoteEle.innerHTML;
+      // +
+      // " --by  " +
+      // authorEle.innerHTML +
+      // "";
+      function tweet() {
+        window.open(
+          "https://twitter.com/intent/tweet?text=" +
+            quoteEle.innerHTML +
+            " - by  " +
+            authorEle.innerHTML,
+          "Tweet Window",
+          "width=600,height=300"
+        );
+      }
+      //change theme
+      function toggleTheme() {
+        console.log(themeButton.getAttribute("src"));
+        if (themeButton.getAttribute("src") == "moon.png") {
+          themeButton.setAttribute("src", "sun.png");
+          document.documentElement.style.setProperty("--primary-color", "#fff");
+          document.documentElement.style.setProperty(
+            "--secondary-color",
+            "black"
+          );
+        } else {
+          themeButton.setAttribute("src", "moon.png");
+          document.documentElement.style.setProperty(
+            "--primary-color",
+            "black"
+          );
+          document.documentElement.style.setProperty(
+            "--secondary-color",
+            "#fff"
+          );
+        }
+      }
+    </script>
+  </body>
+</html>
